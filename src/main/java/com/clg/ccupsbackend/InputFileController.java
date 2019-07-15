@@ -1,6 +1,7 @@
 package com.clg.ccupsbackend;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.clg.ccupsbackend.model.InputFileModel;
 import com.clg.ccupsbackend.repository.IInputFileRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +40,14 @@ public class InputFileController {
     public InputFileModel AddFileConfig(@RequestBody  InputFileModel fileConfig) {
         repo.save(fileConfig);
         return fileConfig;
+    }
+    @PutMapping("/UpdateConfigSequence")
+    public void UpdateConfigSequence(@RequestBody List<InputFileModel> fileConfigList){
+       for (InputFileModel item : fileConfigList) {
+        InputFileModel currentItem = repo.findById(item.getId()).get();
+        currentItem.setSequenceNum(item.getSequenceNum());
+        repo.save(currentItem);   
+       }
+        
     }
 }
