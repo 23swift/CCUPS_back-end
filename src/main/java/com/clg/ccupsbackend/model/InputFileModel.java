@@ -1,6 +1,7 @@
 package com.clg.ccupsbackend.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +21,15 @@ public class InputFileModel {
     private int sequenceNum;
     private String fieldName;
     // private String dataType;
+    
     private String size;
     @ManyToOne
     private DataTypeModel dataType;
-
+   
+    @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "institution_id", referencedColumnName="id")
+    private InstitutionModel institution;
+    
     public String getSize() {
         return size;
     }

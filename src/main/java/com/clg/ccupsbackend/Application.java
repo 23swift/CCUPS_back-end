@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class Application implements  CommandLineRunner {
 	@Autowired
@@ -22,6 +23,7 @@ public class Application implements  CommandLineRunner {
 		repo.save(new DataTypeModel("Alpha Numeric","[0-9a-zA-Z]"));
 		repo.save(new DataTypeModel("Date","[0-9]"));
 		repo.save(new DataTypeModel("Amount","[0-9]"));
+		
 
 	
 	
