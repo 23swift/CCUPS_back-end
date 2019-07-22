@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 /**
  * RegExConfigModel
@@ -31,6 +32,7 @@ public class RegExConfigModel {
 
     private int fileSection;
     private int fileType;
+    @Size(min=1,max=500)
     private String regExPattern; 
 
     @ManyToOne(fetch = FetchType.LAZY)

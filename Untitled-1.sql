@@ -27,12 +27,4 @@ VALUES
     '0012',
     'MERALCO'
   );
-INSERT INTO
-  "CCUPS_DB"."public"."data_type_model" (description, regexpattern)
-VALUES
-  (
-    'Alpha & Special Characters',
-    
-    '[a-zA-Z0-9\s\_\@\$\&\(\)\-\[\]\;\:\,\.\/\|\\]'
-  );
 

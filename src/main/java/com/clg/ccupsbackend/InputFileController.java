@@ -6,12 +6,15 @@ import java.util.Optional;
 import com.clg.ccupsbackend.model.DataTypeModel;
 import com.clg.ccupsbackend.model.InputFileModel;
 import com.clg.ccupsbackend.model.InstitutionModel;
+import com.clg.ccupsbackend.model.MatchInfo;
 import com.clg.ccupsbackend.model.RegExConfigModel;
+import com.clg.ccupsbackend.regExUtil.RegExUtilService;
 import com.clg.ccupsbackend.repository.IInputFileRepository;
 import com.clg.ccupsbackend.repository.IInstitutionRepository;
 import com.clg.ccupsbackend.repository.IRegExConfigRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -35,6 +38,10 @@ public class InputFileController {
     @Autowired IInputFileRepository repo;
     @Autowired IInstitutionRepository institutionRepo;
     @Autowired IRegExConfigRepository regExConfigRepo;
+
+    @Autowired 
+    private RegExUtilService regsexService;
+
     @GetMapping("/GetAllInputFileConfig")
     public List<InputFileModel> GetInputFileConfig(){
         // List<PostModel> list= new ArrayList<PostModel>();
@@ -94,7 +101,28 @@ public class InputFileController {
         currentItem=fileConfig;
         repo.save(currentItem);   
     }
+    @GetMapping("/GetMatchingInfo")
+    public List<MatchInfo> GetMatchingInfo(@RequestBody String fileContent, Long instId){
+        List<MatchInfo> result=null;
+        InstitutionModel inst=institutionRepo.findById(Long.valueOf(instId)).get();
+        RegExConfigModel regeExConfig=regExConfigRepo.findByInstitutionAndFileTypeAndFileSection(inst, Long.valueOf(1) , Long.valueOf(1));
+        final String pattern= regeExConfig.getRegExPattern();
+    //    final String pattern= "(?<recordType>[0-9]{3})(?<cardNumber>[0-9]{16})(?<name>[a-zA-Z0-9\\s\\_\\@\\$\\&\\(\\)\\-\\[\\]\\;\\:\\,\\.\\/\\|\\\\]{30})(?<accountNumber>[0-9]{10})(?<amount>[0-9]{13})(?<amountDecimal>[0-9]{2})(?<transactionDate>[0-9]{8})(?<batchNumber>[a-zA-Z0-9]{10})(?<bankBatchId>[0-9]{10})";
+    // final String pattern= "(?<recordType>[0-9]{3})";
+        result = regsexService.getMatchInformation(pattern, fileContent +"\n");
+        
+        return result;
 
+    }
+    @GetMapping("/GetMatchingGroup")
+    public List<String> GetMatchingGroup(@RequestBody String pattern){
+        List<String> result=null;
+    //    final String patternS=  "(?<recordType>[0-9]{3})(?<cardNumber>[0-9]{16})(?<name>[a-zA-Z0-9\\s\\_\\@\\$\\&\\(\\)\\-\\[\\]\\;\\:\\,\\.\\/\\|\\\\]{30})(?<accountNumber>[0-9]{10})";;
+        result = regsexService.getGroupNames( pattern);
+        
+        return result;
+
+    }
     private void generateRegEx(InstitutionModel inst){
         RegExConfigModel regEx=regExConfigRepo.findByInstitution(inst);
         if(regEx ==null){
