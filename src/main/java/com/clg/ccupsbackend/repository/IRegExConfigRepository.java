@@ -19,6 +19,6 @@ public interface IRegExConfigRepository extends JpaRepository<RegExConfigModel,L
 
     
     public RegExConfigModel findByInstitution(InstitutionModel inst);
-    public RegExConfigModel findByInstitutionAndFileTypeAndFileSection(InstitutionModel inst,Long fileType,Long fileSection);
+    public RegExConfigModel findByInstitutionAndFileTypeAndFileSection(InstitutionModel inst,int fileType,int fileSection);
     
 }

@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class DataTypeModel {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private int Id;
 
     private String description;
     private String regexpattern;
@@ -21,7 +21,7 @@ public class DataTypeModel {
         this.description=paramDesc;
         this.regexpattern=paramRegexPattern;
     }
-    public Long getId() {
+    public int getId() {
         return Id;
     }
 
@@ -41,7 +41,7 @@ public class DataTypeModel {
         this.description = description;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.Id = id;
     }
     

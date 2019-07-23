@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.clg.ccupsbackend.model.MatchInfo;
+import com.clg.ccupsbackend.model.MatchInfoDetails;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Component;
@@ -27,22 +28,22 @@ List<String> groupNames=getGroupNames(regExPattern);
         final Pattern pattern = Pattern.compile(regExPattern, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(line);
         while (matcher.find()) {
-            
-            //  matchInfo.setFullMatch( matcher.group());
+            MatchInfo matchInfo=new MatchInfo();
+              matchInfo.setFullMatch( matcher.group());
             
                     
                         for (String item : groupNames) {
-                            MatchInfo matchInfo= new MatchInfo();
-                            matchInfo.setFieldName(item);
-                            matchInfo.setValue( matcher.group(item));
-                            matchInfo.setStartIndex( Integer.valueOf(matcher.start(item)));
-                            matchInfo.setEndIndex(Integer.valueOf(matcher.end(item)));
-                            result.add(matchInfo);
+                            MatchInfoDetails matchInfoDetails= new MatchInfoDetails();
+                            matchInfoDetails.setFieldName(item);
+                            matchInfoDetails.setValue( matcher.group(item));
+                            matchInfoDetails.setStartIndex( Integer.valueOf(matcher.start(item)));
+                            matchInfoDetails.setEndIndex(Integer.valueOf(matcher.end(item)));
+                            matchInfo.Details.add(matchInfoDetails);
+                            
                         }
 
                         
-
-                       
+                        result.add(matchInfo);
         }
         return result;
     }

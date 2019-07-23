@@ -28,7 +28,7 @@ public class RegExConfigModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private int fileSection;
     private int fileType;
@@ -71,11 +71,11 @@ public class RegExConfigModel {
         this.institution = institution;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
