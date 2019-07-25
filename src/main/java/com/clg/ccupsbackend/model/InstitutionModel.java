@@ -27,19 +27,35 @@ public class InstitutionModel {
     private String code;
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "institution_id")
-    public List<InputFileModel> inputFileConfig = new ArrayList<>();
+    private List<InputFileModel> inputFileConfig = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "institution_id")
-    public List<RegExConfigModel> regExPattern= new ArrayList<>();
+    private List<RegExConfigModel> regExPattern= new ArrayList<>();
 
     public String getCode() {
         return code;
     }
 
-    public Long getId() {
+    public List<RegExConfigModel> getRegExPattern() {
+		return regExPattern;
+	}
+
+	public void setRegExPattern(List<RegExConfigModel> regExPattern) {
+		this.regExPattern = regExPattern;
+	}
+
+	public List<InputFileModel> getInputFileConfig() {
+		return inputFileConfig;
+	}
+
+	public void setInputFileConfig(List<InputFileModel> inputFileConfig) {
+		this.inputFileConfig = inputFileConfig;
+	}
+
+	public Long getId() {
         return id;
     }
 

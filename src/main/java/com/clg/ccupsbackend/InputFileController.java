@@ -14,8 +14,7 @@ import com.clg.ccupsbackend.repository.IInstitutionRepository;
 import com.clg.ccupsbackend.repository.IRegExConfigRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Example;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -64,13 +63,13 @@ public class InputFileController {
         
         // repo.save(fileConfig);
         InstitutionModel inst=institutionRepo.findById(Long.valueOf(instId)).get();
-        
-        inst.inputFileConfig.add(fileConfig);
-        institutionRepo.save(inst);
+       
+        inst.getInputFileConfig().add(fileConfig);
+         institutionRepo.save(inst);
         institutionRepo.flush();
         generateRegEx(inst,fileConfig.getFileType(),fileConfig.getFileSection());
-         
-      
+       
+       
         return fileConfig;
         // return inst.regExPattern;
     }
@@ -80,7 +79,7 @@ public class InputFileController {
         InputFileModel currentItem = repo.findById(id).get();
         repo.delete(currentItem);
        
-        list=repo.findAll(Sort.by(Direction.ASC,"sequenceNum"));
+        list=repo.findByInstitutionAndFileTypeAndFileSectionOrderBySequenceNumAsc(currentItem.getInstitution(),currentItem.getFileType(),currentItem.getFileSection());
         return list;
     }
     @PutMapping("/UpdateConfigSequence")
@@ -128,7 +127,7 @@ public class InputFileController {
         RegExConfigModel regEx=regExConfigRepo.findByInstitutionAndFileTypeAndFileSection(inst,fileType,fileSection);
         if(regEx ==null){
             regEx=new RegExConfigModel(fileType,fileSection,GenerateRegexBasedOnSequence(inst.getId(),fileType,fileSection));
-        inst.regExPattern.add(regEx);
+        inst.getRegExPattern().add(regEx);
         institutionRepo.save(inst);
         }else{
             regEx.setRegExPattern(GenerateRegexBasedOnSequence(inst.getId(),fileType,fileSection));
@@ -145,7 +144,12 @@ public class InputFileController {
         String result="";
         
         for (InputFileModel item : config) {
-            result= result +"(?<" +item.getFieldName() +">" + item.getDataType().getRegexpattern() +"{"+item.getSize()+"}"+")" ;
+            if(item.getSequenceNum()==1){
+                result= result +"(?<" +item.getFieldName() +">^" + item.getDataType().getRegexpattern() +"{"+item.getSize()+"}"+")" ;
+            }else{
+                result= result +"(?<" +item.getFieldName() +">" + item.getDataType().getRegexpattern() +"{"+item.getSize()+"}"+")" ;
+            }
+            
         }
         
 

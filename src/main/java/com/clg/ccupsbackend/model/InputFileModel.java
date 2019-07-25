@@ -5,7 +5,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 /**
  * Inputfile
@@ -27,14 +32,40 @@ public class InputFileModel {
     private DataTypeModel dataType;
    
     @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "institution_id", referencedColumnName="id")
+    @JsonIgnore
     private InstitutionModel institution;
-    
+
     public String getSize() {
         return size;
     }
 
-    public int getSequenceNum() {
+  
+
+    
+
+
+
+	public InstitutionModel getInstitution() {
+		return institution;
+	}
+
+
+
+
+
+
+
+	public void setInstitution(InstitutionModel institution) {
+		this.institution = institution;
+	}
+
+
+
+
+
+
+
+	public int getSequenceNum() {
         return sequenceNum;
     }
 

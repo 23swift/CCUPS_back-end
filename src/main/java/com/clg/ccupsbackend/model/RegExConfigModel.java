@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * RegExConfigModel
  */
@@ -19,10 +21,10 @@ public class RegExConfigModel {
     
     
   
-    public RegExConfigModel(int fileSection, int fileType, String regExPattern) {
-
-        this.fileSection = fileSection;
+    public RegExConfigModel( int fileType, int fileSection,String regExPattern) {
         this.fileType = fileType;
+        this.fileSection = fileSection;
+       
         this.regExPattern = regExPattern;
     }
 
@@ -36,8 +38,9 @@ public class RegExConfigModel {
     private String regExPattern; 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "institution_id", referencedColumnName="id")
-    private InstitutionModel institution;
+    @JoinColumn(name = "institution_id")
+    @JsonIgnore
+    public InstitutionModel institution;
 
     public int getFileSection() {
         return fileSection;

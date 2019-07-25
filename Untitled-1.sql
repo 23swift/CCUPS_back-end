@@ -1,4 +1,4 @@
--- drop table institution_input_file_config;
+
 
 
 -- drop table input_file_model;
